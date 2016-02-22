@@ -1,0 +1,4 @@
+﻿ERROR	2016-02-22 14:50:25,310	0	by.bsu.famcs.MessageManager	[main]	Can not found file outp .
+INFO	2016-02-22 14:51:15,836	0	by.bsu.famcs.MenuManager	[main]	Load data from file output.txt .
+INFO	2016-02-22 14:51:21,176	5340	by.bsu.famcs.MenuManager	[main]	Add message.
+INFO	2016-02-22 14:51:35,516	19680	by.bsu.famcs.MenuManager	[main]	Load data to file output.txt .

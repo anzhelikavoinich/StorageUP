@@ -1,0 +1,646 @@
+
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN"
+        "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta content="yes" name="apple-mobile-web-app-capable"  />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport" />
+    <link href="iwebkit/css/style.css" type="text/css" rel="stylesheet" />
+    <link href="css/iphone.css" type="text/css" rel="stylesheet" />
+
+
+    <title>ParaChat Mobile</title>
+
+    <script type="text/javascript">
+        <!--
+        var isMobileClient = false;
+
+
+        //-->
+    </script>
+
+    <script type="text/javascript">
+        <!--
+
+        window.onload=function()
+        {
+            var isChanging = false;
+
+            isChanging = true;
+
+
+
+            var elem = document.getElementById("topbar");
+            if ( elem && isChanging )
+            {
+                if ( isMobileClient )
+                {
+                    elem.style.height = "52px";
+                }
+                else
+                {
+                    elem.style.height = "95px";
+                }
+            }
+        }
+
+
+        //-->
+    </script>
+
+    <script type="text/javascript" src="../jquery/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        <!--
+
+        var urlparams = '?site=bp8360&key=53557DANLAJXf4&room=Lobby&user=jannet';
+        var urlparamsNoRoom = '?site=bp8360&key=53557DANLAJXf4&user=jannet';
+        var originalRoom = 'Lobby';
+
+
+        var paraDivList = ["ParaPublic", "ParaUsers", "ParaRooms", "ParaPrivate", "ParaSwitch"];
+        var pubHeight = 0;
+        var timer;
+        var seconds=3;
+        var timeInterval = seconds * 1000;
+
+        timer = setTimeout( "timedQuery()", 700 );
+
+
+        // read from server
+        function timedQuery()
+        {
+            fetchMessages();
+            timer = setTimeout( "timedQuery()", timeInterval );
+            clearSendError();
+        }
+
+
+        function stopTimer()
+        {
+            clearTimeout(timer);
+        }
+
+
+        //
+        function fixParams( newroom )
+        {
+            urlparams = urlparamsNoRoom + "&room=" + encodeURIComponent( newroom );
+        }
+
+        function sendMsg()
+        {
+            $.ajax({
+                type: "POST",
+                url: "reqsendpub.jsp",
+                data: $("#sendPublic").serialize(),
+                success:function( data, textStatus, jqXHR ){
+                    var jsonObj;
+                    jsonObj = JSON.parse( jqXHR.responseText );
+                    if ( jsonObj["success"] )
+                    {
+                        clearPubInput();
+                        showSendError( "Sent successfully" );
+                        fetchMessages();
+                    }
+                    else
+                    {
+                        showSendError( jsonObj["error"] );
+                    }
+                },
+                error:function (xhr, ajaxOptions, thrownError){
+                    showPubError( "Server Error: " + xhr.status );
+                }
+            });
+        }
+
+
+        function fetchMessages()
+        {
+            var url     = "reqpub.jsp" + urlparams;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function()
+            {
+                if ( xmlhttp.readyState == 4 )
+                {
+                    if ( xmlhttp.status == 200 )
+                    {
+                        //xmlDoc = xmlhttp.responseXML;
+                        var jsonObj;
+                        jsonObj = JSON.parse( xmlhttp.responseText );
+                        if ( jsonObj["success"] )
+                        {
+                            doSuccess( jsonObj );
+                        }
+                        else
+                        {
+                            doFailure( jsonObj );
+                        }
+                    }
+                }
+            }
+
+            xmlhttp.open( "GET", url, true );
+            xmlhttp.send();
+        }
+
+
+        function doSuccess( jsonObj )
+        {
+            clearError();
+            var alist = jsonObj["messages"];
+            if ( alist == null )
+            {
+                return;
+            }
+            updatePage( alist );
+        }
+
+        function doFailure( jsonObj )
+        {
+            showPubError( jsonObj["error"] );
+            if ( "STOP" == jsonObj["hint"] )
+            {
+                stopTimer();
+            }
+        }
+
+        function clearError()
+        {
+            document.getElementById('errorField').innerHTML = " &nbsp;";
+        }
+
+        function showPubError(msg)
+        {
+            document.getElementById('errorField').innerHTML = msg;
+        }
+
+        function showSendError(msg)
+        {
+            document.getElementById('errorSend').innerHTML = msg;
+        }
+
+        function clearSendError()
+        {
+            document.getElementById('errorSend').innerHTML = "";
+        }
+
+        function clearPubInput()
+        {
+            document.getElementById('publicInput').value = "";
+        }
+
+        function setHeight()
+        {
+            if ( pubHeight > 0 )
+            {
+                return;
+            }
+
+            //alert( "h=" + $("#chat_output").height() + " doc-h=" + $(document).height() );
+            height = $(document).height() * 63 / 100;
+            //var height = $("#chat_output").height();
+            if ( height < 240 )
+            {
+                height = 240;
+            }
+            $("#chat_output").height( height );
+            pubHeight = height;
+        }
+
+        function updatePage( alist )
+        {
+            checkLimit();
+            var objDiv = document.getElementById('chat_output');
+            var len = alist.length;
+
+            setHeight();
+            for ( var i=0; i<len; i++ )
+            {
+                var str = '<p>' + alist[i] + '</p>';
+                objDiv.innerHTML += str;
+            }
+            objDiv.scrollTop = objDiv.scrollHeight;
+        }
+
+        // pid=div ID
+        function showMain()
+        {
+            paraShowOne( "ParaPublic", "" );
+        }
+
+        // pid=div ID
+        function paraShowOne( pid, urname )
+        {
+            for( var k=0; k < paraDivList.length; k++ )
+            {
+                var ele = document.getElementById( paraDivList[k] );
+                if ( pid == ele.id )
+                {
+                    ele.style.display = 'block';
+                }
+                else
+                {
+                    ele.style.display = 'none';
+                }
+            }
+
+            if ( pid == "ParaUsers" )
+            {
+                divUserList();
+            }
+            else if ( pid == "ParaRooms" )
+            {
+                divRoomList();
+            }
+            else if ( pid == "ParaPrivate" )
+            {
+                divSendPriv( urname );
+            }
+            else if ( pid == "ParaSwitch" )
+            {
+                divSwitch( urname );
+            }
+        }
+
+
+        function divUserList()
+        {
+            var url     = "requsers.jsp" + urlparams;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function()
+            {
+                if ( xmlhttp.readyState == 4 )
+                {
+                    if ( xmlhttp.status == 200 )
+                    {
+                        //xmlDoc = xmlhttp.responseXML;
+                        var jsonObj;
+                        jsonObj = JSON.parse( xmlhttp.responseText );
+                        if ( jsonObj["success"] )
+                        {
+                            doUserList( jsonObj );
+                        }
+                        else
+                        {
+                            document.getElementById('ParaUsers').innerHTML = "<p>" + jsonObj["error"] + "</p>";
+                        }
+                    }
+                }
+            }
+
+            xmlhttp.open( "GET", url, true );
+            xmlhttp.send();
+
+        }
+
+
+        function doUserList( jsonObj )
+        {
+            var alist = jsonObj["messages"];
+            if ( alist == null )
+            {
+                return;
+            }
+
+            document.getElementById('ParaUsers').innerHTML = "";
+            var len = alist.length;
+            for ( var i=0; i<len; i++ )
+            {
+                var str = '<p>' + alist[i] + '</p>';
+                document.getElementById('ParaUsers').innerHTML += str;
+            }
+        }
+
+
+        function divRoomList()
+        {
+            var url     = "reqrooms.jsp" + urlparams;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function()
+            {
+                if ( xmlhttp.readyState == 4 )
+                {
+                    if ( xmlhttp.status == 200 )
+                    {
+                        var jsonObj;
+                        jsonObj = JSON.parse( xmlhttp.responseText );
+                        if ( jsonObj["success"] )
+                        {
+                            doRoomList( jsonObj );
+                        }
+                        else
+                        {
+                            document.getElementById('ParaRooms').innerHTML = "<p>" + jsonObj["error"] + "</p>";
+                        }
+                    }
+                }
+            }
+
+            xmlhttp.open( "GET", url, true );
+            xmlhttp.send();
+        }
+
+
+        function doRoomList( jsonObj )
+        {
+            var alist = jsonObj["messages"];
+            if ( alist == null )
+            {
+                return;
+            }
+
+            document.getElementById('ParaRooms').innerHTML = "";
+            var len = alist.length;
+            for ( var i=0; i<len; i++ )
+            {
+                var str = '<p>' + alist[i] + '</p>';
+                document.getElementById('ParaRooms').innerHTML += str;
+            }
+        }
+
+
+        function divSendPriv( uname )
+        {
+            clearPrivError();
+            document.getElementById('PrivateParty').innerHTML = "\"" + uname + "\"";
+            document.getElementById('PartyName').value = uname;
+        }
+
+
+        function divSwitch( rname )
+        {
+            document.getElementById('switchError').innerHTML = "";
+            document.getElementById('RoamingTarget').innerHTML = "\"" + rname + "\"";
+            document.getElementById('switchRoom').value = rname;
+            var url = "reqswitch.jsp" + urlparamsNoRoom + "&" + encodeURI( "switch=" + rname );
+            + "&" + encodeURI( "room=" + originalRoom );
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                success:function( data, textStatus, jqXHR ){
+                    var jsonObj;
+                    jsonObj = JSON.parse( jqXHR.responseText );
+                    if ( jsonObj["success"] )
+                    {
+                        doGoodSwitch( jsonObj, document.getElementById('switchRoom').value );
+                    }
+                    else
+                    {
+                        doFailedSwitch( jsonObj );
+                    }
+                },
+                error:function ( xhr, ajaxOptions, thrownError ) {
+                    showSwitchError( "Server Error: " + xhr.status );
+                }
+            });
+        }
+
+        function doGoodSwitch( jsonObj, newroom )
+        {
+            //alert( "newroom:" + newroom );
+            fixParams( newroom );
+            document.getElementById('divRoomPass').style.display = 'none';
+            document.getElementById('switchError').innerHTML = "<p>" + "Successfully joined " + newroom + "</p>";
+            setTimeout( "showMain()", 1800 );
+        }
+
+
+        function doFailedSwitch( jsonObj )
+        {
+            document.getElementById('switchError').innerHTML = "<p>" + jsonObj["error"] + "</p>";
+            // roaming is room name to switch to.
+            var roaming = jsonObj["pass"];
+            if ( roaming == null )
+            {
+                return;
+            }
+            if ( roaming.length == 0 )
+            {
+                return;
+            }
+            document.getElementById('switchRoom').value = roaming;
+            document.getElementById('divRoomPass').style.display = 'block';
+        }
+
+        function sendRoomPass()
+        {
+            showSwitchError( "" );
+            $.ajax({
+                type: "POST",
+                url: "reqswitch.jsp",
+                data: $("#formRoomPass").serialize(),
+                success:function( data, textStatus, jqXHR ){
+                    var jsonObj;
+                    jsonObj = JSON.parse( jqXHR.responseText );
+                    if ( jsonObj["success"] )
+                    {
+                        doGoodSwitch( jsonObj, document.getElementById('switchRoom').value );
+                    }
+                    else
+                    {
+                        document.getElementById('roomPassInput').value = "";
+                        showSwitchError( "<p>" + jsonObj["error"] + "</p>" );
+                    }
+                },
+                error:function (xhr, ajaxOptions, thrownError){
+                    showSwitchError( "Server Error: " + xhr.status );
+                }
+            });
+        }
+
+        function showSwitchError(msg)
+        {
+            document.getElementById('switchError').innerHTML = msg;
+        }
+
+        function sendPriv()
+        {
+// $.post( "reqsendpriv.jsp", $("#sendPrivate").serialize() );
+            $.ajax({
+                type: "POST",
+                url: "reqsendpriv.jsp",
+                data: $("#sendPrivate").serialize(),
+                success:function( data, textStatus, jqXHR ){
+                    var jsonObj;
+                    jsonObj = JSON.parse( jqXHR.responseText );
+                    if ( jsonObj["success"] )
+                    {
+                        showPrivError( "Sent successfully" );
+                        clearPrivInput();
+                        setTimeout( "showMain()", 1800 );
+                    }
+                    else
+                    {
+                        showPrivError( jsonObj["error"] );
+                    }
+                },
+                error:function (xhr, ajaxOptions, thrownError){
+                    showPrivError( "Server Error: " + xhr.status );
+                }
+            });
+        }
+
+        function clearPrivInput()
+        {
+            document.getElementById('privateInput').value = "";
+        }
+
+        function showPrivError(msg)
+        {
+            document.getElementById('privateError').innerHTML = msg;
+        }
+
+        function clearPrivError()
+        {
+            document.getElementById('privateError').innerHTML = "";
+        }
+
+        function checkLimit()
+        {
+            var max = 1600;
+            var removal = 800;
+            var obj = document.getElementById('chat_output');
+            var len = obj.childNodes.length;
+
+            if ( len < max )
+            {
+                return;
+            }
+            for ( var i=0; i<removal; i++ )
+            {
+                obj.removeChild( obj.childNodes[0] );
+            }
+        }
+
+        //-->
+    </script>
+
+</head>
+<body>
+
+
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+    <tr>
+        <td class="chat_topbar" colspan="3">
+            <div id="topbar">
+
+                <iframe src='http://chat.parachat.com/ad-mobile/' framespacing='0' frameborder='no' scrolling='no' width='100%' height='95' allowtransparency='true'></iframe>
+
+
+            </div>
+
+            <div id="tributton">
+                <div class="links">
+                    <a href="javascript:showMain();" TITLE="Home: Public Chat" ><img src="images/left.png"></a><a href="javascript:paraShowOne('ParaUsers','');" TITLE="View User List"><img src="images/middle.png"></a><a href="javascript:paraShowOne('ParaRooms','');" TITLE="View All Rooms"><img src="images/right.png"></a>
+                </div></div>
+        </td>
+    </tr>
+</table>
+
+
+
+<div id="ParaPublic">
+    <form id="sendPublic" action="javascript: sendMsg();" >
+<span class="imchat">
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+        <td colspan="2" id="chat_output_td" class="chat_output">
+            <div id="chat_output" style="height:240px;min-height:120px;" >
+            </div></td></tr>
+
+    <input type="hidden" name="site" value="bp8360" format="" />
+    <input type="hidden" name="room" value="Lobby" format="" />
+    <input type="hidden" name="user" value="jannet" format="" />
+    <input type="hidden" name="key" value="53557DANLAJXf4" format="" />
+
+    <tr id="tr_chat_input">
+        <td class="chat_input"><textarea type="text" row="2" id="publicInput" name="msg" value=""></textarea></td>
+        <td class="chat_input"><input type="submit" id="im_chat_send" value="Send">
+
+        </td>
+    <tr>
+        <td class="errorField" colspan="2">
+            <label id="errorField"></label><label id="errorSend"></label>
+        </td>
+    </tr>
+</table>
+</span>
+    </form>
+</div>
+
+
+
+<div id="ParaUsers" style="display: none;">
+</div>
+
+<div id="ParaRooms" style="display: none;">
+</div>
+
+
+<div id="ParaSwitch" style="display: none;">
+    <strong>Switch to room: <div id="RoamingTarget"></div></strong>
+    <div id="divRoomPass" style="display: none;">
+        <form id="formRoomPass" action="javascript: sendRoomPass();" >
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+                <tr height="100%">
+                    <td colspan="2" id="roamingpage" class="privatechatpage" height="100%">
+                    </td></tr>
+                <input type="hidden" name="site" value="bp8360" format="" />
+                <input type="hidden" name="room" value="Lobby" format="" />
+                <input type="hidden" name="user" value="jannet" format="" />
+                <input type="hidden" name="key"  value="53557DANLAJXf4" format="" />
+                <input type="hidden" name="switch" id="switchRoom" value="" format="" />
+
+                <tr id="tr_chat_input">
+                    <td class="chat_input">
+                        <strong>Enter room password:</strong>
+                        <input type="password" name="roompass" id="roomPassInput" value="" format="" />
+                        <input type="submit" id="im_chat_send" value="Send">
+                    </td>
+
+            </table>
+        </form>
+    </div>
+    <label id="switchError"></label>
+</div>
+
+
+<div id="ParaPrivate" style="display: none;">
+    <form id="sendPrivate" action="javascript: sendPriv();" >
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+
+            <tr height="100%">
+                <td colspan="2" id="privatechatpage" class="privatechatpage" height="100%">
+                    <strong>Send a Private Message to: <div id="PrivateParty"></div></strong>
+                </td></tr>
+
+            <input type="hidden" name="site" value="bp8360" format="" />
+            <input type="hidden" name="room" value="Lobby" format="" />
+            <input type="hidden" name="user" value="jannet" format="" />
+            <input type="hidden" name="key" value="53557DANLAJXf4" format="" />
+
+            <input id="PartyName" type="hidden" name="party" value="" format="" />
+
+            <tr id="tr_chat_input">
+                <td class="chat_input"><textarea type="text" row="2" id="privateInput" name="msg" value=""></textarea></td>
+                <td class="chat_input"> <input type="submit" id="im_chat_send" value="Send"></td>
+
+            <tr>
+                <td class="errorField" colspan="2">
+                    <label id="errorField"></label><label id="privateError"></label>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+
+</body>
+</html>
