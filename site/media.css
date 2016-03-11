@@ -1,0 +1,97 @@
+@media screen and (max-width: 1100px) and (max-height:800px){
+    .work-area{
+        height: 600px;
+    }
+    .text{
+        font-size: 20px;
+    }
+    .input{
+        weight: 40%;
+    }
+    .button{
+        padding:9px 20px;
+    }
+    .footer{
+        height: 13px;
+        margin-top: -5%;
+        line-height: 85px;
+        padding: 0 17px;
+    }
+}
+@media screen and (max-width: 900px) {
+    .work-area{
+        height: 520px;
+    }
+    .text{
+        font-size: 17px;
+    }
+    .input{
+        weight: 40%;
+    }
+    .button{
+        padding:6px 16px;
+        font:17px "Cooper Black", Gadget, sans-serif;
+    }
+    .button:active{
+        padding:6px 16px;
+        font:17px "Cooper Black", Gadget, sans-serif;
+    }
+    .footer{
+        height: 10px;
+        margin: -3%;
+        line-height: 80px;
+        padding: 0 15px;
+    }
+}
+
+
+@media screen and (max-width: 700px) {
+    .work-area{
+        height: 420px ;
+    }
+    .text{
+        font-size: 15px;
+    }
+    .input{
+        weight: 40%;
+        padding: 2px 4px;
+    }
+    .button{
+        padding:6px 16px;
+        font:15px "Cooper Black", Gadget, sans-serif;
+    }
+    .button:active{
+        padding:6px 16px;
+        font:15px "Cooper Black", Gadget, sans-serif;
+    }
+    .footer{
+        height: 8px;
+        margin: -3%;
+        line-height: 70px;
+        padding: 0 13px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .work-area{
+        height: 300px;
+    }
+    .text{
+        font-size: 10px;
+    }
+    .input{
+        weight: 20%;
+    }
+    .button{
+        padding:6px 16px;
+        font:10px "Cooper Black", Gadget, sans-serif;
+    }
+    .button:active{
+        padding:6px 16px;
+        font:10px "Cooper Black", Gadget, sans-serif;
+    }
+    .footer{
+        margin: -3%;
+    }
+
+}

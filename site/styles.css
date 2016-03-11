@@ -1,0 +1,105 @@
+header {
+    background: url("http://cache4.asset-cache.net/gc/492497213-celebration-pattern-with-cupcakes-gettyimages.jpg?v=1&c=IWSAsset&k=2&d=XpGYDHTRUcsGkReaR4vIwIyDQEYZusxhlrg088t11oSS%2F38sfO616plWD7F%2BJYHtZIseZjARUccsceAoWNbAfQ%3D%3D") center;
+    height: 80px;
+    margin-bottom: 10px;
+}
+body{
+    background-color: #fffee3
+}
+
+tr{
+    padding-bottom: 3%;
+}
+
+.all{
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 5%;
+}
+
+.header-text{
+    font-family: "Cooper Black", serif;
+    opacity: 0.8;
+    text-align: center;
+    font-size: 30px;
+    color: #3d1e0f;
+    text-shadow: -1px -1px #FFF,
+    1px 1px #333;
+}
+
+.text{
+    display: inline-block;
+    font-family: "Cooper Black", serif;
+    text-decoration:none;
+    font-size: 30px;
+    color: #3d1e0f;
+    opacity: 0.8;
+    text-shadow: -1px -1px #FFF, 1px 1px #333;
+    margin: 2%;
+}
+.menu{
+    height: 300px;
+    max-width: 30%;
+    margin-right: 3%;
+    padding: 4px 6px;
+}
+
+.work-area{
+    background-color: whitesmoke;
+    height: 600px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    max-width: 50%;
+    overflow-y: auto;
+    word-break: break-all;
+    margin-left: 1%;
+}
+.button{
+    text-decoration:none;
+    text-align:center;
+    padding:5px 20px;
+    -webkit-border-radius:10px;
+    -moz-border-radius:10px;
+    border-radius: 14px;
+    font:30px "Cooper Black", Gadget, sans-serif;
+    font-weight:bold;
+    color: #8a6d3b;
+    background:bisque;
+    margin-top: 100em;
+    margin-left: 1%;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+
+}
+.button:active{
+    padding:5px 20px;
+    border:none;
+    -webkit-border-radius:10px;
+    -moz-border-radius:10px;
+    border-radius: 14px;
+    font:30px "Cooper Black", Gadget, sans-serif;
+    font-weight:bold;
+    color:#8a6d3b;
+    background: burlywood;
+}
+.input {
+    display: inline-block;
+    height: 70%;
+    padding: 4px 6px;
+
+    font-size: 14px;
+    line-height: 20px;
+    color: #555555;
+    border: 1px solid #d3d3d3;
+    border-radius: 20px;
+    font-family: "Cooper Black";
+    width: 60%;
+}
+.footer{
+    height: 10px;
+    text-align: right;
+    line-height: 100px;
+    color: #333333;
+    margin-top: -5%;
+    margin-right: 5px;
+}
+
+
