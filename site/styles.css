@@ -11,6 +11,16 @@ tr{
     padding-bottom: 3%;
 }
 
+.selected-message{
+    background-color : burlywood;
+    margin: 1%;
+    width: 50%;
+    height: 10%;
+    text-align: left;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 14px;
+    font-size: 20px;
+}
 .all{
     margin-left: 10%;
     margin-right: 10%;
@@ -26,12 +36,21 @@ tr{
     text-shadow: -1px -1px #FFF,
     1px 1px #333;
 }
-
+.message-text{
+    display: inline-block;
+    font-family: "Century Gothic", serif;
+    text-decoration:none;
+    font-size: 14px;
+    color: #3d1e0f;
+    opacity: 0.8;
+    text-shadow: -1px -1px #FFF, 1px 1px #333;
+    margin: 2%;
+}
 .text{
     display: inline-block;
     font-family: "Cooper Black", serif;
     text-decoration:none;
-    font-size: 30px;
+    font-size: 20px;
     color: #3d1e0f;
     opacity: 0.8;
     text-shadow: -1px -1px #FFF, 1px 1px #333;
@@ -43,8 +62,21 @@ tr{
     margin-right: 3%;
     padding: 4px 6px;
 }
-
-.work-area{
+.message{
+    margin: 1%;
+    width: 50%;
+    height: 10%;
+    background-color: bisque;
+    text-align: left;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 14px;
+    font-size: 20px;
+}
+#panelsend{
+    height: 80px;
+    max-width: 70%;
+}
+#work-area{
     background-color: whitesmoke;
     height: 600px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
@@ -84,7 +116,6 @@ tr{
     display: inline-block;
     height: 70%;
     padding: 4px 6px;
-
     font-size: 14px;
     line-height: 20px;
     color: #555555;

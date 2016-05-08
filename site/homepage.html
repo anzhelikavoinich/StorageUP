@@ -5,20 +5,21 @@
     <title>Chat</title>
     <link rel="stylesheet" href="styles.css"/>
     <link rel="stylesheet" href="media.css"/>
+    <script src = "script.js"></script>
 </head>
-<body>
+<body onload="run()">
     <header class="header-font">
         <h1 class="header-text">Muffin Chat</h1>
     </header>
     <div class="text">
         Name
     </div>
-    <input  type="text" class="input" placeholder="Enter name...">
-    <a href="#" class="button"/>Ok</a>
+    <input  id = "namefield" type="text" class="input" placeholder="Enter name...">
+    <a href="#" class="button" onclick="buttonOk()"/>Ok</a>
     <div align="left">
         <table class = "menu" align="left" >
             <tr>
-                <td class="text">
+                <td id = "username" class="text">
                         UserName
                 </td>
             </tr>
@@ -29,7 +30,7 @@
             </tr>
             <tr>
                 <td>
-                    <a href="#" class="button"/>Delete</a>
+                    <a href="#" class="button" onclick="deleteMessage()"/>Delete</a>
                 </td>
             </tr>
             <tr>
@@ -37,13 +38,21 @@
                     <a href="#" class="button"/>History</a>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <a href="#" class="button" id = "edit" onclick="changebutton()"/>Edit</a>
+                </td>
+            </tr>
         </table>
-        <div class = "work-area"></div>
+        <div id="work-area"></div>
+
+        <div id = "panelsend">
             <div class="text">
                 Message
             </div>
-            <input  type="text" class="input" placeholder="Enter message...">
-            <a href="#" class="button"/>Send</a>
+            <input  id = "messagetext" type="text" class="input" placeholder="Enter message...">
+            <a href="#" class="button" id = "send" onclick="buttonSend()"/>Send</a>
+        </div>
     </div>
 
 
