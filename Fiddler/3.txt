@@ -1,0 +1,13 @@
+POST http://localhost:999/chat?token=TN35EN HTTP/1.1
+header User-Agent: Composer
+Host: localhost:999
+Content-Length: 29
+
+{"message": "Let you go"}
+
+HTTP/1.1 200 OK
+Date: Tue, 05 Apr 2016 09:13:14 GMT
+Transfer-encoding: chunked
+Access-control-allow-origin: *
+
+0
